@@ -198,7 +198,7 @@ class ObjectNavILNet(Net):
                 )
 
             idx = self.task_cat2mpcat40[
-                observations["objectgoal"].long().to(obj_semantic.device)
+                observations["objectgoal"].long().to('cpu')
             ]
 
             if self.is_thda:
