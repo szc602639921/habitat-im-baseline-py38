@@ -198,8 +198,9 @@ class ObjectNavILNet(Net):
                 )
 
             idx = self.task_cat2mpcat40[
-                observations["objectgoal"].long()
+                observations["objectgoal"].long().to(obj_semantic.device)
             ]
+
             if self.is_thda:
                 idx = self.mapping_mpcat40_to_goal[idx].long()
             idx = idx.to(obj_semantic.device)

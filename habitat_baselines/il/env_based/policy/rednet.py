@@ -422,7 +422,7 @@ def load_rednet(device, ckpt="", resize=True, stabilize=False, num_classes=40):
     model = RedNetResizeWrapper(device, resize=resize, stabilize=stabilize, num_classes=num_classes).to(device)
 
     print("=> loading RedNet checkpoint '{}'".format(ckpt))
-    if device.type == 'cuda':
+    if device.type == 'cpu':
         checkpoint = torch.load(ckpt, map_location='cpu')
     else:
         checkpoint = torch.load(ckpt, map_location=lambda storage, loc: storage)

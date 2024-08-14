@@ -444,17 +444,17 @@ def test_noise_models_rgbd():
 
         obs = env.reset()
         assert np.linalg.norm(
-            obs["rgb"].astype(np.float)
-            - no_noise_obs[0]["rgb"].astype(np.float)
+            obs["rgb"].astype(np.float32)
+            - no_noise_obs[0]["rgb"].astype(np.float32)
         ) > 1.5e-2 * np.linalg.norm(
-            no_noise_obs[0]["rgb"].astype(np.float)
+            no_noise_obs[0]["rgb"].astype(np.float32)
         ), "No RGB noise detected."
 
         assert np.linalg.norm(
-            obs["depth"].astype(np.float)
-            - no_noise_obs[0]["depth"].astype(np.float)
+            obs["depth"].astype(np.float32)
+            - no_noise_obs[0]["depth"].astype(np.float32)
         ) > 1.5e-2 * np.linalg.norm(
-            no_noise_obs[0]["depth"].astype(np.float)
+            no_noise_obs[0]["depth"].astype(np.float32)
         ), "No Depth noise detected."
 
         images = []
