@@ -265,11 +265,15 @@ class RearrangementBCDistribTrainer(BaseILTrainer):
 
         action_space = self.envs.action_spaces[0]
 
+
         self.model = self._setup_model(
             self.envs.observation_spaces[0],
             action_space,
             config.MODEL
         )
+        
+
+
 
         self.model.to(self.device)
         # Distributed data parallel setup

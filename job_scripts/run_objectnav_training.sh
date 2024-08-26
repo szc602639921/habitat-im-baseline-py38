@@ -5,15 +5,13 @@
 #SBATCH --cpus-per-task 6
 #SBATCH --ntasks-per-node 1
 #SBATCH --signal=USR1@300
-#SBATCH --partition=short
-#SBATCH --constraint=rtx_6000
+#SBATCH --partition=LocalQ
 #SBATCH --output=slurm_logs/ddppo-%j.out
 #SBATCH --error=slurm_logs/ddppo-%j.err
 #SBATCH --requeue
 
-source /srv/share3/rramrakhya6/miniconda3/etc/profile.d/conda.sh
-conda deactivate
-conda activate habitat-3
+source /home/users/shen/miniconda3/bin/activate
+conda activate habitat-web-py38
 
 export GLOG_minloglevel=2
 export MAGNUM_LOG=quiet

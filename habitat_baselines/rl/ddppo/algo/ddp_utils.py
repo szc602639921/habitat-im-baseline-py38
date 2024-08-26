@@ -6,7 +6,7 @@ import subprocess
 import threading
 from os import path as osp
 from typing import Any, Callable, Optional, Tuple, Union, overload
-
+import datetime
 import ifcfg
 import torch
 from torch import distributed as distrib
@@ -234,7 +234,7 @@ def init_distrib_slurm(
         master_addr, master_port, world_size, world_rank == 0
     )
     distrib.init_process_group(
-        backend, store=tcp_store, rank=world_rank, world_size=world_size
+        backend, store=tcp_store, rank=world_rank, world_size=world_size, timeout=datetime.timedelta(seconds=10000000)
     )
 
     return local_rank, tcp_store

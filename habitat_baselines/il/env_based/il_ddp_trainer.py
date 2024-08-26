@@ -179,6 +179,10 @@ class ILEnvDDPTrainer(ILEnvTrainer):
             os.makedirs(self.config.CHECKPOINT_FOLDER)
 
         self._setup_actor_critic_agent(il_cfg, self.config.MODEL)
+        checkpoint_path = "data/new_checkpoints/objectnav/objectnav_mp3d_thda_70k/sem_seg_pred/seed_1/ckpt.5.pth"
+        ckpt_dict = self.load_checkpoint(checkpoint_path, map_location="cpu")
+        self.agent.load_state_dict(ckpt_dict["state_dict"], strict=True) 
+        self.policy = self.agent.model
         self.agent.init_distributed(find_unused_params=True)
         self.agent.train()
 
@@ -240,7 +244,7 @@ class ILEnvDDPTrainer(ILEnvTrainer):
         env_time = 0
         pth_time = 0
         count_steps: float = 0
-        count_checkpoints = 0
+        count_checkpoints = 6
         start_update = 0
         prev_time = 0
 

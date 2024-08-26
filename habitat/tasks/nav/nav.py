@@ -597,12 +597,15 @@ class SPL(Measure):
         )
 
         self._previous_position = current_position
-        self._metric = ep_success * (
-            self._start_end_episode_distance
-            / max(
-                self._start_end_episode_distance, self._agent_episode_distance
+        try:
+            self._metric = ep_success * (
+                self._start_end_episode_distance
+                / max(
+                    self._start_end_episode_distance, self._agent_episode_distance
+                )
             )
-        )
+        except:
+            self._metric = 0
         # print(self._start_end_episode_distance, self._agent_episode_distance, self._metric)
 
 
@@ -634,23 +637,27 @@ class SoftSPL(SPL):
         distance_to_target = task.measurements.measures[
             DistanceToGoal.cls_uuid
         ].get_metric()
-
-        ep_soft_success = max(
-            0, (1 - distance_to_target / self._start_end_episode_distance)
-        )
+        try:
+            ep_soft_success = max(
+                0, (1 - distance_to_target / self._start_end_episode_distance)
+            )
+        except:
+            ep_soft_success = 0
 
         self._agent_episode_distance += self._euclidean_distance(
             current_position, self._previous_position
         )
 
         self._previous_position = current_position
-
-        self._metric = ep_soft_success * (
-            self._start_end_episode_distance
-            / max(
-                self._start_end_episode_distance, self._agent_episode_distance
+        try:
+            self._metric = ep_soft_success * (
+                self._start_end_episode_distance
+                / max(
+                    self._start_end_episode_distance, self._agent_episode_distance
+                )
             )
-        )
+        except:
+            self._metric = 0
 
 
 @registry.register_measure

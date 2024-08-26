@@ -1,11 +1,12 @@
 # %%
 
-dataset_path = "/home/users/shen/habitat-web-baselines/data/datasets/objectnav/objectnav_mp3d_70k/train/content"
+
 
 import os
 import gzip
 import json
 from multiprocessing import Pool, cpu_count
+
 
 def process_dataset(dataset):
     dataset_path = "/home/users/shen/habitat-web-baselines/data/datasets/objectnav/objectnav_mp3d_70k/train/content"
@@ -73,3 +74,4 @@ if __name__ == "__main__":
 
 
 # %%
+

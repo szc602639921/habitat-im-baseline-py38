@@ -358,6 +358,7 @@ class HabitatSim(habitat_sim.Simulator, Simulator):
 
     # THDA Initialization
     def _initialize_THDA_scene(self):
+        print("DEBUG!!!!!!!!!!!!!!!!!!: THDA Initialization")
         self.remove_all_objects()
         self.recompute_navmesh(self.pathfinder, self.navmesh_settings, True)
         # Retrieving scene state from config
@@ -367,6 +368,7 @@ class HabitatSim(habitat_sim.Simulator, Simulator):
         ):
             return
         objects = self.habitat_config.scene_state[0]["objects"]
+        print("DEBUG!!!!!!!!!!!!!!!!!!: THDA Initialization")
         obj_templates_mgr = self.get_object_template_manager()
 
         # self.remove_all_objects()
@@ -379,6 +381,7 @@ class HabitatSim(habitat_sim.Simulator, Simulator):
         if objects is not None:
             for object in objects:
                 object_template = f"{object.object_template}"
+                print(f"DEBUG!!!!!!!!!!!!!!!!!!:{object_template}")
                 object_pos = object.position
                 object_rot = object.rotation
                 object_template_handles = (

@@ -31,7 +31,6 @@ EVAL:
 IL:
   POLICY:
     name: "ObjectNavILPolicy"
-
   USE_IW: True
   distrib_backend: GLOO
   BehaviorCloning:

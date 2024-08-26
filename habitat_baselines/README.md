@@ -1,3 +1,7 @@
+sudo scontrol update NodeName=LocalQ State=DOWN Reason="undraining"
+sudo scontrol update NodeName=LocalQ State=RESUME
+sbatch /home/users/shen/habitat-web-baselines/habitat_baselines/il/disk_based/multi_node_slurm.sh
+python habitat_baselines/run.py --exp-config habitat_baselines/config/objectnav/il_ddp_objectnav.yaml --run-type train
 baselines
 ==============================
 ### Installation

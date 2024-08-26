@@ -1,3 +1,5 @@
+python habitat_baselines/run.py --exp-config habitat_baselines/config/objectnav/il_ddp_objectnav.yaml --run-type train
+
 # Habitat-Web
 
 Code for training imitation learning agents for [Objectnav](https://arxiv.org/abs/2006.13171) and [Pick-and-Place](https://arxiv.org/abs/2204.03514) in [Habitat](https://aihabitat.org/). This repo is the official code repository for the paper **[Habitat-Web: Learning Embodied Object-Search from Human Demonstrations at Scale](https://arxiv.org/abs/2204.03514)**

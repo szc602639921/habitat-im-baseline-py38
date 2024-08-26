@@ -310,6 +310,7 @@ class ObjectNavDatasetV2(PointNavDatasetV1):
 
                 objects = [ObjectInScene(**o) for o in episode.scene_state["objects"]]
                 scene_state = [SceneState(objects=objects).__dict__]
+                #print(scene_state)
                 episode.scene_state = scene_state
 
             if episode.reference_replay is not None:
