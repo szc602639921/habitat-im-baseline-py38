@@ -358,7 +358,7 @@ class HabitatSim(habitat_sim.Simulator, Simulator):
 
     # THDA Initialization
     def _initialize_THDA_scene(self):
-        print("DEBUG!!!!!!!!!!!!!!!!!!: THDA Initialization")
+        print("DEBUG!!!!!!!!!!!!!!!!!!: THDA Initialization Start")
         self.remove_all_objects()
         self.recompute_navmesh(self.pathfinder, self.navmesh_settings, True)
         # Retrieving scene state from config
@@ -366,9 +366,10 @@ class HabitatSim(habitat_sim.Simulator, Simulator):
             not hasattr(self.habitat_config, "scene_state")
             or self.habitat_config.scene_state is None
         ):
+            print("DEBUG!!!!!!!!!!!!!!!!!!: None self.habitat_config. Init Finished ")
             return
         objects = self.habitat_config.scene_state[0]["objects"]
-        print("DEBUG!!!!!!!!!!!!!!!!!!: THDA Initialization")
+        print("DEBUG!!!!!!!!!!!!!!!!!!: THDA Initialization: Has Scene State")
         obj_templates_mgr = self.get_object_template_manager()
 
         # self.remove_all_objects()
@@ -381,7 +382,7 @@ class HabitatSim(habitat_sim.Simulator, Simulator):
         if objects is not None:
             for object in objects:
                 object_template = f"{object.object_template}"
-                print(f"DEBUG!!!!!!!!!!!!!!!!!!:{object_template}")
+                print(f"DEBUG!!!!!!!!!!!!!!!!!!:Introduce Object {object_template}")
                 object_pos = object.position
                 object_rot = object.rotation
                 object_template_handles = (
@@ -392,10 +393,12 @@ class HabitatSim(habitat_sim.Simulator, Simulator):
 
                 if len(object_template_handles) >= 1:
                     object_template_handle = object_template_handles[0]
+                    print(f"DEBUG!!!!!!!!!!!!!!!!!!:Reusing template handle.{object_template_handle} {object_template}")
                     # logger.info(f"Reusing template handle.{object_template_handle} | {obj_templates_mgr.get_num_templates()}")
                 else:
                     # if obj_templates_mgr.get_num_templates() < 20:
                     # logger.info(f"Creating new template handle. {object_template} | {obj_templates_mgr.get_num_templates()}")
+                    
                     _object_template_ids = (
                         obj_templates_mgr.load_object_configs(object_template)
                     )
@@ -418,7 +421,7 @@ class HabitatSim(habitat_sim.Simulator, Simulator):
                     # else:
                     # object_template_handle = obj_templates_mgr.get_random_template_handle()
                     # logger.info(f"Random object {object_template_handle} instead of {object_template}")
-
+                    print(f"DEBUG!!!!!!!!!!!!!!!!!!:Created template handle.{object_template_handle} {object_template}")
                 object_id = self.add_object_by_handle(object_template_handle)
 
                 self.sim_object_to_objid_mapping[object_id] = object.object_id
@@ -432,6 +435,7 @@ class HabitatSim(habitat_sim.Simulator, Simulator):
                 ] = object.semantic_category_id
 
                 if object_pos is not None:
+                    print(f"DEBUG!!!!!!!!!!!!!!!!!!:Place Object {object_template}")
                     self.set_translation(object_pos, object_id)
                     if isinstance(object_rot, list):
                         object_rot = quat_from_coeffs(object_rot)
@@ -439,6 +443,7 @@ class HabitatSim(habitat_sim.Simulator, Simulator):
                         object_rot = quat_to_magnum(object_rot)
                         self.set_rotation(object_rot, object_id)
                 else:
+                    print(f"DEBUG!!!!!!!!!!!!!!!!!!:No Object Position {object_template}")
                     self.sample_object_state(object_id)
                     self.recompute_navmesh(
                         self.pathfinder, self.navmesh_settings, True
@@ -447,15 +452,18 @@ class HabitatSim(habitat_sim.Simulator, Simulator):
                 # self.sample_object_state(object_id)
 
                 self.set_object_motion_type(MotionType.STATIC, object_id)
-                # print(f"rotation: {self.get_rotation_vec(object_id)}")
-                # print(f"position: {np.array(self.get_translation(object_id)).tolist()}")
-                # print(f"{self.sample_navigable_point()}")
+                print(f"rotation: {self.get_rotation_vec(object_id)}")
+                print(f"position: {np.array(self.get_translation(object_id)).tolist()}")
+                print(f"{self.sample_navigable_point()}")
 
             # Recompute the navmesh after placing all the objects.
+            print(f"DEBUG!!!!!!!!!!!!!!!!!!:Recompute the navmesh after placing all the objects.")
             self.recompute_navmesh(
                 self.pathfinder, self.navmesh_settings, True
             )
+            print(f"DEBUG!!!!!!!!!!!!!!!!!!:Finished recomputation of the navmesh after placing all the objects.")
             # logger.info("Inserting objects and recompute navmesh")
+        return
     
     def sample_object_state(
         sim,
