@@ -210,7 +210,7 @@ class ResnetSemSeqEncoder(nn.Module):
         spatial_output: bool = False,
         semantic_embedding_size=4,
         use_pred_semantics=False,
-        use_goal_seg=False,
+        use_goal_seg=True,
         is_thda=False,
     ):
         super().__init__()
@@ -275,6 +275,8 @@ class ResnetSemSeqEncoder(nn.Module):
             if not self.use_goal_seg:
                 categories = observations["semantic"].long() + 1
                 observations["semantic"] = self.semantic_embedder(categories)
+            else:
+                observations["semantic"] = observations["semantic"].float()
             x = self.visual_encoder(observations)
 
         if self.spatial_output:

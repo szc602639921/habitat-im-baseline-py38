@@ -144,6 +144,8 @@ class ObjectNavILNet(Net):
             rnn_input_size += 32
             logger.info("\n\nSetting up Compass sensor")
 
+        # disable the ObjectGoalSensor
+        '''
         if ObjectGoalSensor.cls_uuid in observation_space.spaces:
             self._n_object_categories = (
                 int(
@@ -159,7 +161,7 @@ class ObjectNavILNet(Net):
             )
             rnn_input_size += 32
             logger.info("\n\nSetting up Object Goal sensor")
-
+        '''
         if model_config.SEQ2SEQ.use_prev_action:
             self.prev_action_embedding = nn.Embedding(num_actions + 1, 32)
             rnn_input_size += self.prev_action_embedding.embedding_dim
@@ -247,6 +249,13 @@ class ObjectNavILNet(Net):
                 observations["semantic"] = semantic_obs.contiguous().view(
                     -1, semantic_obs.size(2), semantic_obs.size(3)
                 )
+            # add semantic features to use the goal seg
+            idx = self.task_cat2mpcat40[
+                observations["objectgoal"][0].long().to('cpu')
+            ]
+            semantic_features = semantic_obs == idx.to(semantic_obs.device)
+            observations["semantic"] = semantic_features.permute(0,2,3,1)
+            
             if self.embed_sge:
                 sge_embedding = self._extract_sge(observations)
                 x.append(sge_embedding)
@@ -278,7 +287,7 @@ class ObjectNavILNet(Net):
             object_goal = observations[ObjectGoalSensor.cls_uuid].long()
             if len(object_goal.size()) == 3:
                 object_goal = object_goal.contiguous().view(-1, object_goal.size(2))
-            x.append(self.obj_categories_embedding(object_goal).squeeze(dim=1))
+        #    x.append(self.obj_categories_embedding(object_goal).squeeze(dim=1))
 
         if self.model_config.SEQ2SEQ.use_prev_action:
             prev_actions_embedding = self.prev_action_embedding(
